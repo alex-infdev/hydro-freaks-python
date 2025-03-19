@@ -31,7 +31,7 @@ class HydroFreaks:
             "type": drink_type,
             "amount": amount,
             "points": points,
-            "date": datetime.now().strftime("%Y-%m-%d $H:$M")
+            "date": datetime.now().strftime("%Y-%M-%D $H:$M")
         })
 
         self.check_evolution()
@@ -93,23 +93,23 @@ class HydroFreaks:
         if monster_type in MONSTER_TYPES and stage < len(MONSTER_STAGES):
             ascii_art = MONSTER_STAGES[stage].get(monster_type, "")
             print(ascii_art)
-            print(f"Monster type: {monster_type.title()}")
+            print(f"Freak type: {monster_type.title()}")
             print(f"Evolution stage: {stage + 1}/3")
         else:
-            print("No monster selected or invalid monster type.")
+            print("No freak selected or invalid freak type.")
 
     def display_monster_collection(self):
         if not self.monsters:
             print("Your collection is empty. Drink more water!")
             return
         
-        print("\n===== MONSTER COLLECTION =====")
+        print("\n===== FREAK COLLECTION =====")
         for monster_type, stage in self.monsters.items():
             print(f"{monster_type.title()}: Evolution stage {stage}/3")
 
     def change_monster(self):
         clear_screen()
-        print("===== SELECT MONSTER =====")
+        print("===== SELECT FREAK =====")
 
         available_types = list(MONSTER_TYPES)
         for i, monster_type in enumerate(available_types, 1):
@@ -117,7 +117,7 @@ class HydroFreaks:
             status = "Unlocked" if evolution > 0 else "Locked"
             print(f"{i}. {monster_type.title()} [{status}]")
 
-        print("\nEnter the number of the monster you want to select (or 0 to cancel):")
+        print("\nEnter the number of the freak you want to select (or 0 to cancel):")
         try:
             choice = int(input("> "))
             if 1 <= choice <= len(available_types):
@@ -127,7 +127,7 @@ class HydroFreaks:
                     self.current_monster_type = selected_type
                     print(f"\nYou selected: {selected_type.title()}")
                 else:
-                    print("\nThat monster is locked! Drink more to unlock it.")
+                    print("\nThat freak is locked! Drink more to unlock it.")
 
             elif choice != 0:
                 print("\nInvalid selection.")
@@ -138,7 +138,7 @@ class HydroFreaks:
         input("\nPress Enter to continue...")
 
     def display_stats(self):
-        print(f"\nTotal hydration score: {self.hydration_score:.lf}")
+        print(f"\nTotal hydration score: {self.hydration_score}")
         print(f"Freaks collected: {sum(1 for v in self.monsters.values() if v > 0)}/{len(MONSTER_TYPES)}")
 
         next_threshold = None
@@ -149,9 +149,9 @@ class HydroFreaks:
 
         if next_threshold:
             points_needed = next_threshold - self.hydration_score
-            print(f"Points to next evolution: {points_needed:.lf}")
+            print(f"Points to next evolution: {points_needed}")
         else:
-            print("All evolutions complete for current monster!")
+            print("All evolutions complete for current freak!")
 
     def add_drink_menu(self):
         clear_screen()
@@ -201,7 +201,7 @@ class HydroFreaks:
             return
         
         for i, entry in enumerate(reversed(self.drink_history[-10:]), 1):
-            print(f"{i}. {entry['date']}: {entry['amount']}ml of {entry['type']} (+{entry['points']:.lf} pts)")
+            print(f"{i}. {entry['date']}: {entry['amount']}ml of {entry['type']} (+{entry['points']} pts)")
 
         if len(self.drink_history) > 10:
             print(f"\n...and {len(self.drink_history) - 10} more entries.")
@@ -210,7 +210,7 @@ class HydroFreaks:
 
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
-    
+
 def main():
     game = HydroFreaks()
 
