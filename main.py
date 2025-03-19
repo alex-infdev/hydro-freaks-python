@@ -53,13 +53,42 @@ def check_evolution(self):
                 return True
             
 def save_game(self):
-    pass
+    game_data = {
+        "hydration_score": self.hydration_score,
+        "monsters": self.monsters,
+        "drink_history": self.drink_history,
+        "current_monster_type": self.current_monster_type
+    }
+
+    try:
+        with open(SAVE_FILE, "wb") as f:
+            pickle.dump(game_data, f)
+    except Exception as e:
+        print(f"Error saving game: {e}")
 
 def load_game(self):
-    pass
+    if not os.path.exists(SAVE_FILE):
+        return
+    
+    try:
+        with open(SAVE_FILE, "rb") as f:
+            game_data = pickle.load(f)
+
+        self.hydtration_score = game_data.get("hydration_score", 0)
+        self.monsters = game_data.get("monsters", {})
+        self.drink_history = game_data.get("drink_history", [])
+        self.current_monster_type = game_data.get("current_monster_type", "blob")
+    except Exception as e:
+        print(f"Error loading game: {e}")
 
 def display_current_monster(self):
-    pass
+    monster_type = self.current_monster_type
+    stage = 0
+
+    if monster_type in self.monsters:
+        stage = self.monsters[monster_type] - 1
+        if stage < 0:
+            stage = 0
 
 def display_monster_collection(self):
     pass
